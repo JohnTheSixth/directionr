@@ -1,0 +1,16 @@
+<div><%= link_to "Write New Directions", new_direction_path %></div>
+
+<h1>My Blog</h1>
+<hr />
+<% @directions.each do |direction| %>
+  <h1><%= link_to direction.title, direction %></h1>
+  
+  <p>
+    <%= markdown(direction.body) %>
+  </p>
+  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+
+  <% if direction != @directions.last %>
+  <hr />
+  <% end %>
+<% end %>

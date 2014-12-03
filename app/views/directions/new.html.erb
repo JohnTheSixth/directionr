@@ -1,0 +1,10 @@
+<%= params %>
+
+<%= form_for @direction do |d| %>
+
+	<p><%= d.text_field :title, placeholder: "Title" %></p>
+	<p><%= d.text_area :body, rows: "10", cols: "60" %></p>
+	<p><%= d.text_field :published_at, placeholder: Time.now %></p>
+	<p><%= d.submit "Submit your .md post!" %></p>
+
+<% end %>
