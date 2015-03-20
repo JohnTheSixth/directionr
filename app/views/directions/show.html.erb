@@ -1,3 +1,5 @@
+<%= params %>
+
 <h1><%= @direction.title %></h1>
 <hr />
   
@@ -5,4 +7,4 @@
   <%= markdown(@direction.body) %>
 </p>
 <h4>Published <%= time_ago_in_words @direction.published_at %> ago</h4>
-<%= link_to "Back to Index", directions_path %>
+<%= link_to "Back to Index", user_directions_path %>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Directionr</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<% flash.each do |key, value| %>
+  <div class='<%= key %>'>
+    <% if value.class != Array %>
+    	<%= value %>
+    <% else %>
+	    <% value.each do |msg| %>
+	      <p><%= msg %></p>
+	    <% end %>
+	<% end %>
+  </div>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

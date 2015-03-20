@@ -1,7 +1,17 @@
 Rails.application.routes.draw do
 
-  resources :directions #, only: [:index, :show, :new]
+  resources :users, only: [:create, :new, :edit, :show, :update, :destroy] do
 
-  root to: 'directions#index'
+    resources :directions
+  
+  end
+
+  root to: 'sessions#new'
+
+  get '/login' => 'sessions#new'
+
+  post '/login' => 'sessions#create'
+
+  get '/logout' => 'sessions#destroy'
 
 end

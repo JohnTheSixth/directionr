@@ -1,26 +1,28 @@
 class DirectionsController < ApplicationController
 
-  def index
-  	@directions = Direction.order("published_at DESC")
-  end
+	before_filter :authorize
 
-  def show
-  	@direction = Direction.find(params[:id])
-  end
+	def index
+		@directions = Direction.where(user_id: params[:user_id]).order("published_at DESC")
+	end
 
-  def new
-  	@direction = Direction.new
-  end
+	def show
+		@direction = Direction.find(params[:id])
+	end
 
-  def create
-  	@direction = Direction.new(direction_params)
+	def new
+		@direction = Direction.new
+	end
 
-  	if @direction.save
-  		redirect_to "/directions"
-  	else
-  		render :new
-  	end
-  end
+	def create
+		@direction = Direction.new(direction_params)
+
+		if @direction.save
+			redirect_to "/directions"
+		else
+			render :new
+		end
+	end
 
 private
 

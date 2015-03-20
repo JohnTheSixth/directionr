@@ -1,0 +1,27 @@
+<div class="row">
+
+	<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+
+		<%= form_tag '/login' do %>
+		  <div class="form-group">
+		    <label for="loginEmail">Email address</label>
+		    <%= email_field_tag :loginEmail, nil, class: 'form-control', placeholder: 'Enter email' %>
+		  </div>
+
+		  <div class="form-group">
+		    <label for="loginPassword">Password</label>
+		    <%= password_field_tag :loginPassword, nil, class: 'form-control', placeholder: 'Password' %>
+		  </div>
+
+		  <%= submit_tag "Login", class: 'btn btn-default' %>
+		<% end %>
+
+	</div>
+
+</div>
+
+<div class="row">
+	<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+		<p>If you don't have an account, <%= link_to 'create one here', '/users/new' %>.</p>
+	</div>
+</div>
