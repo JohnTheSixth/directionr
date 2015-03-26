@@ -10,7 +10,11 @@ class SessionsController < ApplicationController
 		@user = User.find_by_email(params[:loginEmail])
 
 		if @user && @user.authenticate(params[:loginPassword])
-			session[:user_id] = @user.id
+			if params[:remember_me]
+				cookies.permanent[:auth_token] = @user.auth_token
+			else
+				cookies[:auth_token] = @user.auth_token
+			end
 			redirect_to root_path
 		elsif ( params[:loginEmail].length > 0 ) && ( @user == nil )
 			flash[:danger] = "That email does not exist."
@@ -22,7 +26,7 @@ class SessionsController < ApplicationController
 	end
 
 	def destroy
-		session.destroy
+		cookies.delete(:auth_token)
 		redirect_to root_path
 	end
 
