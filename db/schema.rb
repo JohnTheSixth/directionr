@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326055648) do
+ActiveRecord::Schema.define(version: 20160414202652) do
 
-  create_table "directions", force: true do |t|
-    t.string   "title"
+  create_table "directions", force: :cascade do |t|
+    t.string   "title",        limit: 255
     t.text     "body"
     t.datetime "published_at"
     t.datetime "created_at"
@@ -22,14 +22,16 @@ ActiveRecord::Schema.define(version: 20150326055648) do
     t.integer  "user_id"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "password_digest"
+  create_table "users", force: :cascade do |t|
+    t.string   "first_name",             limit: 255
+    t.string   "last_name",              limit: 255
+    t.string   "email",                  limit: 255
+    t.string   "password_digest",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "auth_token"
+    t.string   "auth_token",             limit: 255
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
 end

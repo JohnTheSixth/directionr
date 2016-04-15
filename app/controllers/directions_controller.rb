@@ -22,6 +22,7 @@ class DirectionsController < ApplicationController
 		else
 			render :new
 		end
+
 	end
 
 private

@@ -4,9 +4,17 @@ class User < ActiveRecord::Base
 
 	has_many :directions
 
-	validates_presence_of :first_name, :last_name, :email, :password_confirmation
+	validates_presence_of :first_name, :last_name, :email, :password_confirmation, :on => :create
+	validates_presence_of :email, :on => :send_password_reset
 
 	before_create { generate_token(:auth_token) }
+
+	def send_password_reset
+		generate_token(:password_reset_token)
+		self.password_reset_sent_at = Time.zone.now
+		save!
+		UserMailer.password_reset(self).deliver
+	end
 
 	def generate_token(column)
 		begin
