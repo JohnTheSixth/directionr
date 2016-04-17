@@ -5,7 +5,6 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		
 		existing = User.find_by_email(params[:user][:email])
 
 		if existing != nil
@@ -14,7 +13,6 @@ class UsersController < ApplicationController
 			redirect_to new_user_path
 
 		elsif existing == nil
-
 			@user = User.create(user_params)
 
 			if @user.save
@@ -24,9 +22,7 @@ class UsersController < ApplicationController
 				flash.now[:danger] = @user.errors.full_messages
 				render :new
 			end
-
 		end
-
 	end
 
 	def edit
