@@ -8,10 +8,8 @@ class UsersController < ApplicationController
 		existing = User.find_by_email(params[:user][:email])
 
 		if existing != nil
-
 			flash[:danger] = "Sorry, that email is already taken."
 			redirect_to new_user_path
-
 		elsif existing == nil
 			@user = User.create(user_params)
 
@@ -26,6 +24,12 @@ class UsersController < ApplicationController
 	end
 
 	def edit
+		if !params[:id]
+			flash[:danger] = "You must be logged in to edit your user information."
+			redirect_to root_path
+		else
+			@user = User.find_by_id(params[:id])
+		end
 	end
 
 	def show
