@@ -3,7 +3,7 @@
 <h1>My Blog</h1>
 <hr />
 <% @directions.each do |direction| %>
-  <h1><%= link_to direction.title, "/users/#{params[:user_id]}/directions/#{direction.id}" %></h1>
+  <h1><%= link_to direction.title, "/users/#{params[:username]}/directions/#{direction.id}" %></h1>
   
   <p>
     <%= markdown(direction.body) %>

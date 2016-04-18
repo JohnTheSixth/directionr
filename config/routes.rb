@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
 
   resources :users, only: [:create, :new, :edit, :show, :update, :destroy] do
-
-    resources :directions
-  
-  end
+		resources :directions
+	end
 
   resources :password_resets
 

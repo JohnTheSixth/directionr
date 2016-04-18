@@ -4,10 +4,14 @@ class User < ActiveRecord::Base
 
 	has_many :directions
 
-	validates_presence_of :first_name, :last_name, :email, :password_confirmation, :on => :create
+	validates_presence_of :first_name, :last_name, :email, :password_confirmation, :username, :on => :create
 	validates_presence_of :email, :on => :send_password_reset
 
 	before_create { generate_token(:auth_token) }
+
+	def to_param
+		"#{id}-#{username}"
+	end
 
 	def send_account_create
 	end
