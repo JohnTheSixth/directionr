@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
 	end
 
 	def send_account_create
+		generate_token(:account_create_token)
+		self.account_create_sent_at = Time.zone.now
+		save!
+		UserMailer.account_create(self).deliver
 	end
 
 	def send_password_reset

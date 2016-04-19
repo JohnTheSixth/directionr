@@ -14,7 +14,8 @@ class UsersController < ApplicationController
 			@user = User.create(user_params)
 
 			if @user.save
-				session[:username] = @user.username
+				@user.send_account_create
+				flash[:success] = 'Please click on the link in your email to confirm your account.'
 				redirect_to root_path
 			else
 				flash.now[:danger] = @user.errors.full_messages
