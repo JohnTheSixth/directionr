@@ -1,3 +1,19 @@
-<%= params %>
+<div class="row">
+  <div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
 
-<p>Here is where you can edit your account</p>
+	<%= params %>
+
+	</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+
+		<% if flash[:info] == nil and params[:account_create_token] != nil %>
+			<p>Thank you for creating your account!</p>
+		<% end %>
+		
+		<p>You may begin creating directions <%= link_to 'here', edit_session_path, target: '_blank' %>.</p>
+
+	</div>
+</div>

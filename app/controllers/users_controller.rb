@@ -25,11 +25,30 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		if !params[:id]
-			flash[:danger] = "You must be logged in to edit your user information."
-			redirect_to root_path
+		if params[:id] != nil
+			# Logging in normally will not match an account creation token in any circumstance.
+			@user = User.find_by_account_create_token!(params[:id])
+
+			if @user != nil
+				if @user.account_create_confirmed_at != nil
+					flash.now[:info] = 'You have already confirmed your account.'
+				else
+					@user.account_create_confirmed_at = Time.zone.now
+		
+					if @user.save
+						params[:account_create_token] = @user.account_create_token
+					else
+						flash[:danger] = 'We\'re sorry, there was an error creating your account.'
+					end
+				end
+			else
+				# If an account creation token cannot be matched with the param,
+				# it will search for a matching user id.
+				@user = User.find_by_id(params[:id])
+			end
 		else
-			@user = User.find_by_id(params[:id])
+			flash.now[:danger] = "You must be logged in to edit your user information."
+			redirect_to root_path
 		end
 	end
 
@@ -37,19 +56,6 @@ class UsersController < ApplicationController
 	end
 
 	def update
-		@user = User.find_by_account_create_token!(params[:id])
-		
-		if @user.account_create_confirmed_at != nil
-			flash.now[:info] = 'You have already confirmed your account.'
-		else
-			@user.account_create_confirmed_at = Time.zone.now
-		
-			if @user.save
-				params[:account_create_token] = @user.account_create_token
-			else
-				flash[:danger] = 'We\'re sorry, there was an error creating your account.'
-			end
-		end
 	end
 
 	def destroy

@@ -2,7 +2,8 @@ class SessionsController < ApplicationController
 
 	def new
 		if current_user
-			redirect_to "/users/#{current_user[:username]}/directions"
+			@user = current_user
+			redirect_to user_directions_path(@user)
 		end
 	end
 
@@ -29,7 +30,7 @@ class SessionsController < ApplicationController
 		@user = User.find_by_account_create_token(params[:id])
 		cookies[:auth_token] = @user.auth_token
 
-		redirect_to "/users/#{current_user[:id]}/directions"
+		redirect_to user_directions_path(@user)
 	end
 
 	def destroy
