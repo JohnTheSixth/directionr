@@ -4,8 +4,6 @@
   <%= @greeting %>, find me in app/views/user_mailer/password_reset.html.erb
 </p>
  -->
-<p>Thank you for signing up for DirectionR! Please click on the email below to confirm your account:</p>
+Thank you for signing up for DirectionR! Please click <%= link_to "here", "http://localhost:3000/users/#{@user.account_create_token}/update" %> to confirm your account:
 
-<p><%= edit_user_url(@user.account_create_token) %></p>
-
-<p>If you did not create an account with DirectionR, and you believe this email to be erroneous, please click here:</p>
+If you did not create an account with DirectionR, and you believe this email to be erroneous, please click here:

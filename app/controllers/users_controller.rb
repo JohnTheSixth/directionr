@@ -37,6 +37,19 @@ class UsersController < ApplicationController
 	end
 
 	def update
+		@user = User.find_by_account_create_token!(params[:id])
+		
+		if @user.account_create_confirmed_at != nil
+			flash.now[:info] = 'You have already confirmed your account.'
+		else
+			@user.account_create_confirmed_at = Time.zone.now
+		
+			if @user.save
+				params[:account_create_token] = @user.account_create_token
+			else
+				flash[:danger] = 'We\'re sorry, there was an error creating your account.'
+			end
+		end
 	end
 
 	def destroy

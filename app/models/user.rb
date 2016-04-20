@@ -9,9 +9,9 @@ class User < ActiveRecord::Base
 
 	before_create { generate_token(:auth_token) }
 
-	def to_param
-		"#{id}-#{username}"
-	end
+	# def to_param
+	# 	username
+	# end
 
 	def send_account_create
 		generate_token(:account_create_token)

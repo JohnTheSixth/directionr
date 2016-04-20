@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
 	def new
 		if current_user
-			redirect_to "/users/#{current_user[:id]}/directions"
+			redirect_to "/users/#{current_user[:username]}/directions"
 		end
 	end
 
@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
 			else
 				cookies[:auth_token] = @user.auth_token
 			end
-			redirect_to root_path
+			redirect_to "/users/#{current_user[:id]}/directions"
 		elsif ( params[:loginEmail].length > 0 ) && ( @user == nil )
 			flash[:danger] = "That email does not exist."
 			redirect_to login_path
@@ -23,6 +23,13 @@ class SessionsController < ApplicationController
 			flash[:danger] = "Your email or password is incorrect."
 			redirect_to login_path
 		end
+	end
+
+	def edit
+		@user = User.find_by_account_create_token(params[:id])
+		cookies[:auth_token] = @user.auth_token
+
+		redirect_to "/users/#{current_user[:id]}/directions"
 	end
 
 	def destroy

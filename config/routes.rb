@@ -4,9 +4,11 @@ Rails.application.routes.draw do
   	resources :directions
   end
 
+  resources :sessions
+
   resources :password_resets
 
-  root to: 'sessions#new'
+  root 'sessions#new'
 
   get '/login' => 'sessions#new'
 
