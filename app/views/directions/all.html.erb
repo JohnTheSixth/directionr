@@ -1,0 +1,9 @@
+<%= params %>
+
+<h1>User Directions</h1>
+<hr />
+<% @directions.each do |direction| %>
+  <h1><%= link_to direction.title, "/directions/#{direction[:id]}/view" %></h1>
+  <p><%= markdown(direction.body) %></p>
+  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+<% end %>

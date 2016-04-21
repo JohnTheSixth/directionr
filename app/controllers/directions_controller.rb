@@ -1,6 +1,14 @@
 class DirectionsController < ApplicationController
 
-	before_filter :authorize
+	before_action :authorize, except: [:all, :view]
+
+	def all
+		@directions = Direction.find_each#.order("published_at DESC")#(batch_size: 10)#
+	end
+
+	def view
+		@direction = Direction.find(params[:id])
+	end
 
 	def index
 		@directions = Direction.where(user_id: params[:user_id]).order("published_at DESC")
@@ -22,6 +30,15 @@ class DirectionsController < ApplicationController
 		else
 			render :new
 		end
+	end
+
+	def edit
+	end
+
+	def update
+	end
+
+	def destroy
 	end
 
 private
