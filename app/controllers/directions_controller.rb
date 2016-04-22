@@ -1,9 +1,11 @@
 class DirectionsController < ApplicationController
 
 	before_action :authorize, except: [:all, :view]
+	before_action :current_user, only: [:all, :view]
 
 	def all
-		@directions = Direction.find_each#.order("published_at DESC")#(batch_size: 10)#
+		limit = 5
+		@directions = Direction.order("published_at DESC").first(limit)
 	end
 
 	def view

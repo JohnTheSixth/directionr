@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :users, except: [:index] do
   	resources :directions
   end
+  get '/users/:id/confirm' => 'users#confirm'
 
   get '/directions/all' => 'directions#all'
   get '/directions/:id/view' => 'directions#view'

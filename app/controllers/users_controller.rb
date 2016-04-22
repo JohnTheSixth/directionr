@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
 
+	before_action :current_user, only: [:edit, :show, :update, :destroy]
+	before_action :confirm_user, only: [:edit, :show, :update, :destroy]
+
 	def new
 		@user = User.new
 	end
@@ -8,7 +11,7 @@ class UsersController < ApplicationController
 		existing = User.find_by_email(params[:user][:email])
 
 		if existing != nil
-			flash[:danger] = "Sorry, that email is already taken."
+			flash[:danger] = 'Sorry, that email is already taken.'
 			redirect_to new_user_path
 		elsif existing == nil
 			@user = User.create(user_params)
@@ -24,38 +27,43 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def edit
-		if params[:id] != nil
-			# Logging in normally will not match an account creation token in any circumstance.
-			@user = User.find_by_account_create_token!(params[:id])
+	def confirm
+		@user = User.find_by_account_create_token!(params[:id])
 
-			if @user != nil
-				if @user.account_create_confirmed_at != nil
-					flash.now[:info] = 'You have already confirmed your account.'
-				else
-					@user.account_create_confirmed_at = Time.zone.now
-		
-					if @user.save
-						params[:account_create_token] = @user.account_create_token
-					else
-						flash[:danger] = 'We\'re sorry, there was an error creating your account.'
-					end
-				end
-			else
-				# If an account creation token cannot be matched with the param,
-				# it will search for a matching user id.
-				@user = User.find_by_id(params[:id])
-			end
+		if @user.account_create_confirmed_at != nil
+			flash.now[:info] = 'You have already confirmed your account.'
 		else
-			flash.now[:danger] = "You must be logged in to edit your user information."
+			@user.account_create_confirmed_at = Time.zone.now
+
+			if @user.save
+				params[:account_create_token] = @user.account_create_token
+			else
+				flash[:danger] = 'We\'re sorry, there was an error creating your account.'
+			end
+		end
+	end
+
+	def edit
+		@user = User.find_by_id(params[:id])
+	end
+
+	def show
+		@user = User.find(params[:id])
+
+		if @user.auth_token != cookies[:auth_token]
+			flash[:danger] = 'You do not have permission to perform that action.'
 			redirect_to root_path
 		end
 	end
 
-	def show
-	end
-
 	def update
+		# if params[:user][:password].length < 1
+		# 	flash.now[:danger] = 'Your password cannot be blank.'
+		# end
+
+		User.find(params[:id]).update(update_user_params)
+		@user = User.find(params[:id])
+		render :show
 	end
 
 	def destroy
@@ -74,6 +82,10 @@ private
 
 	def user_params
 		params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :username)
+	end
+
+	def update_user_params
+		params.require(:user).permit(:first_name, :last_name, :email, :username, :password)
 	end
 
 end

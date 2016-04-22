@@ -1,9 +1,15 @@
-<%= params %>
+<div class="row">
+	<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+		<h1>Most recent directions:</h1>
+	</div>
+</div>
 
-<h1>User Directions</h1>
-<hr />
 <% @directions.each do |direction| %>
-  <h1><%= link_to direction.title, "/directions/#{direction[:id]}/view" %></h1>
-  <p><%= markdown(direction.body) %></p>
-  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+	<div class="row">
+		<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+		  <h3><%= link_to direction.title, "/directions/#{direction[:id]}/view" %></h3>
+		  <h5>Created by <%= direction.user.username %></h5>
+		  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+		</div>
+	</div>
 <% end %>

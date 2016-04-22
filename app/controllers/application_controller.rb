@@ -14,4 +14,13 @@ class ApplicationController < ActionController::Base
     redirect_to login_path unless current_user
   end
 
+  def confirm_user
+    @user = User.find(params[:id])
+    
+    if @user.auth_token != cookies[:auth_token]
+      flash[:danger] = 'You do not have permission to perform that action.'
+      redirect_to root_path
+    end
+  end
+
 end
