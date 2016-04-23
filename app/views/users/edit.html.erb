@@ -1,39 +1,81 @@
-<%= params %>
+<div class="row">
+	<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+
+
+
+		<div class="panel panel-primary">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Edit My Information</h3>
+		  </div>
+		  <%= form_for @user do |f| %>
+		  <div class="panel-body">
+
+					<div class="form-group">
+						<label for="first_name">First Name:</label>
+						<%= f.text_field :first_name, class: 'form-text-field form-control', placeholder: 'First Name' %>
+					</div>
+
+					<div class="form-group">
+						<label for="last_name">Last Name:</label>
+						<%= f.text_field :last_name, class: 'form-text-field form-control', placeholder: 'Last Name' %>
+					</div>
+
+					<div class="form-group">
+						<label for="username">Username:</label>
+						<%= f.text_field :username, class: 'form-text-field form-control', placeholder: 'Username' %>
+					</div>
+					 
+					<div class="form-group">
+						<label for="email">Email:</label>
+						<%= f.text_field :email, class: 'form-text-field form-control', placeholder: 'Email' %>
+					</div>
+				
+					<div class="form-group">
+						<label for="password">Password:</label>
+						<%= f.password_field :current_password, class: 'form-text-field form-control', placeholder: 'Password' %>
+					</div>
+
+		  </div>
+		  <div class="panel-footer"><%= f.submit 'Update My Account', class: 'btn btn-primary' %></div>
+		  <% end %><!-- End of user info form -->
+
+		</div><!-- End of user info panel -->
+
+	</div>
+</div>
 
 <div class="row">
-	<div class="col-lg-4 col-lg-offset-4 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+	<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+		
+		<div class="panel panel-primary">
 
-		<div class="loginForm">
-		<%= form_for @user do |f| %>
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Change My Password</h3>
+		  </div>
 
-			<div class="form-group">
-				<label for="first_name">First Name:</label>
-				<%= f.text_field :first_name, class: 'form-text-field form-control', placeholder: 'First Name' %>
-			</div>
+		  <%= form_for @user, :namespace => 'pw' do |f| %>
+		  <div class="panel-body">
 
-			<div class="form-group">
-				<label for="last_name">Last Name:</label>
-				<%= f.text_field :last_name, class: 'form-text-field form-control', placeholder: 'Last Name' %>
-			</div>
+				<div class="form-group">
+					<label for="password">Current Password:</label>
+					<%= f.password_field :current_password, class: 'form-text-field form-control', placeholder: 'Current Password' %>
+				</div>
 
-			<div class="form-group">
-				<label for="username">Username:</label>
-				<%= f.text_field :username, class: 'form-text-field form-control', placeholder: 'Username' %>
-			</div>
-				 
-			<div class="form-group">
-				<label for="email">Email:</label>
-				<%= f.text_field :email, class: 'form-text-field form-control', placeholder: 'Email' %>
-			</div>
-			
-			<div class="form-group">
-				<label for="password">Password:</label>
-				<%= f.password_field :password, class: 'form-text-field form-control', placeholder: 'Password' %>
-			</div>
-			
-			<p><%= f.submit 'Update My Account', class: 'btn btn-default' %></p>
+				<div class="form-group">
+					<label for="password">New Password:</label>
+					<%= f.password_field :password, class: 'form-text-field form-control', placeholder: 'New Password' %>
+				</div>
+				
+				<div class="form-group">
+					<label for="password_confirmation">Confirm New Password:</label>
+					<%= f.password_field :password_confirmation, class: 'form-text-field form-control', placeholder: 'Confirm New Password' %>
+				</div>
 
-		<% end %>
-		</div>
+		  </div>
+		  <div class="panel-footer"><%= f.submit 'Update My Account', class: 'btn btn-primary' %></div>
+		  <% end %><!-- End of password form -->
+
+		</div><!-- End of password panel -->
+
 	</div>
 </div>

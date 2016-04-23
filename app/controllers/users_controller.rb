@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
-	before_action :current_user, only: [:edit, :show, :update, :destroy]
+	skip_before_action :authorize, only: [:new, :create, :confirm]
+	skip_before_action :current_user, only: [:new, :create, :confirm]
 	before_action :confirm_user, only: [:edit, :show, :update, :destroy]
 
 	def new
@@ -44,48 +45,51 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		@user = User.find_by_id(params[:id])
+		@user = User.find(params[:id])
 	end
 
 	def show
 		@user = User.find(params[:id])
-
-		if @user.auth_token != cookies[:auth_token]
-			flash[:danger] = 'You do not have permission to perform that action.'
-			redirect_to root_path
-		end
 	end
 
 	def update
-		# if params[:user][:password].length < 1
-		# 	flash.now[:danger] = 'Your password cannot be blank.'
-		# end
-
-		User.find(params[:id]).update(update_user_params)
 		@user = User.find(params[:id])
-		render :show
+
+		if update_user_params[:current_password].length == 0
+			flash.now[:danger] = 'Please enter your password to update your information.'
+			render :edit
+		elsif @user.authenticate(update_user_params[:current_password]) != @user
+			flash.now[:danger] = 'The password you entered does not match the current account password.'
+			render :edit
+		elsif @user.authenticate(update_user_params[:current_password]) == @user
+			if @user.update_attributes(update_user_params.permit(:first_name, :last_name, :username, :email, :password, :password_confirmation))
+				render :show
+			else
+				flash.now[:danger] = @user.errors.full_messages
+				render :edit
+			end
+		end
 	end
 
 	def destroy
-		# 		if Article.destroy_all(user_id: params[:id])
-		# 	User.destroy_all(id: params[:id])
-		# 	flash[:success] = "You have successfully deleted your account."
-		# 	session[:user_id] = nil
-		# 	redirect_to login_path
-		# else
-		# 	flash[:danger] = "Your account was not deleted."
-		# 	render :delete
-		# end
+		if User.destroy_all(id: params[:id])
+			flash[:success] = 'You have successfully deleted your account.'
+			session[:id] = nil
+			redirect_to root_path
+		else
+			flash[:danger] = 'Your account was not deleted.'
+			render :edit
+		end
 	end
 
 private
 
 	def user_params
-		params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :username)
+		params.require(:user).permit(:first_name, :last_name, :email, :username, :password, :password_confirmation)
 	end
 
 	def update_user_params
-		params.require(:user).permit(:first_name, :last_name, :email, :username, :password)
+		params.require(:user).permit(:first_name, :last_name, :email, :username, :current_password, :password, :password_confirmation)
 	end
 
 end

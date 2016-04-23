@@ -1,5 +1,8 @@
 class SessionsController < ApplicationController
 
+	skip_before_action :authorize
+	skip_before_action :current_user
+
 	def new
 		if current_user
 			@user = current_user

@@ -1,7 +1,8 @@
 class DirectionsController < ApplicationController
 
-	before_action :authorize, except: [:all, :view]
-	before_action :current_user, only: [:all, :view]
+	skip_before_action :authorize, only: [:all, :view]
+	skip_before_action :current_user, except: [:all, :view]
+	before_action :confirm_user, except: [:all, :view]
 
 	def all
 		limit = 5
