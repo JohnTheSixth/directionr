@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   end
 
   def confirm_user
-    current_user_id = params[:id] || params[:user_id]
+    current_user_id =  params[:user_id] || params[:id]
     user = User.try(:find, current_user_id)
 
     rescue ActiveRecord::RecordNotFound

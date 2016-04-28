@@ -1,14 +1,20 @@
-<h1>My Blog</h1>
-<hr />
-<% @directions.each do |direction| %>
-  <h1><%= link_to direction.title, "/users/#{params[:id]}/directions/#{direction.id}" %></h1>
-  
-  <p>
-    <%= markdown(direction.body) %>
-  </p>
-  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+<div class="row">
+	<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
 
-  <% if direction != @directions.last %>
-  <hr />
-  <% end %>
-<% end %>
+		<h1>My Directions</h1>
+		<hr />
+		<% @directions.each do |direction| %>
+		  <h1><%= link_to direction.title, user_direction_path(@current_user.id, direction.id) %></h1>
+		  
+		  <p>
+		    <%= markdown(direction.body) %>
+		  </p>
+		  <h5>Published <%= time_ago_in_words direction.published_at %> ago</h5>
+
+		  <% if direction != @directions.last %>
+		  <hr />
+		  <% end %>
+		<% end %>
+
+	</div>
+</div>
