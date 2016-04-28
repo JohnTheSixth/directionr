@@ -27,9 +27,11 @@ class DirectionsController < ApplicationController
 
 	def create
 		@direction = Direction.new(direction_params)
+		@direction.published_at = Time.zone.now
+		@direction.user_id = params[:user_id]
 
 		if @direction.save
-			redirect_to "/directions"
+			render :view
 		else
 			render :new
 		end
@@ -47,7 +49,7 @@ class DirectionsController < ApplicationController
 private
 
 	def direction_params
-		params.require(:direction).permit(:title, :body, :published_at)
+		params.require(:direction).permit(:title, :body)
 	end
 
 end

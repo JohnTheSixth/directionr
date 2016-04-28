@@ -1,8 +1,21 @@
-<%= form_for @direction do |d| %>
+<div class="row">
+	<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
 
-	<p><%= d.text_field :title, placeholder: "Title" %></p>
-	<p><%= d.text_area :body, rows: "10", cols: "60" %></p>
-	<p><%= d.text_field :published_at, placeholder: Time.now %></p>
-	<p><%= d.submit "Submit your .md post!" %></p>
+		<%= form_for @direction, url: user_directions_path do |d| %>
 
-<% end %>
+			<div class="form-group">
+				<label for="title">Title:</label>
+				<%= d.text_field :title, class: 'form-text-field form-control', placeholder: "Title" %>
+			</div>
+
+			<div class="form-group">
+				<label for="body">Directions:</label>
+				<%= d.text_area :body, class: 'form-control', rows: '10', cols: '60' %>
+			</div>
+
+			<p><%= d.submit 'Submit your .md post!', class: 'btn btn-default' %></p>
+
+		<% end %>
+
+	</div>
+</div>
