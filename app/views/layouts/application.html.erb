@@ -56,6 +56,7 @@
 		            <li><%= link_to "Log Out", logout_path %></li>
 		          </ul>
 		        </li>
+		        <li><%= link_to(raw('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Directions'), new_user_direction_path, {:class => 'navbar-right', :id => 'new-direction-button' }) %></li>
 		      <% else %>
 		      	<li id="createAccount"><%= link_to "Create Account", new_user_path %></li>
 		      	<li id="login"><%= link_to "Log In", login_path %></li>

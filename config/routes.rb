@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :users, except: [:index] do
+  resources :users, except: [:index] do #Add param: :username, after :users to sub in username
   	resources :directions
   end
   get '/users/:id/confirm' => 'users#confirm'
+  get '/users/:id/deny' => 'users#deny'
 
   get '/directions/all' => 'directions#all'
   get '/directions/:id/view' => 'directions#view'
