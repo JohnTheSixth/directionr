@@ -9,26 +9,22 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		existing_email = User.find_by_email(params[:user][:email])
-		existing_uname = User.find_by_username(params[:user][:username])
+		user = User.new(user_params)
 
-		if existing_email != nil
-			flash[:danger] = 'Sorry, that email is already taken.'
-			redirect_to new_user_path
-		elsif existing_uname != nil
-			flash[:danger] = 'Sorry, that username is already taken.'
-			redirect_to new_user_path
-		elsif existing_email == nil && existing_uname == nil
-			@user = User.create(user_params)
+		if user.check_existing
+			@user = User.create(user_params)	
 
 			if @user.save
 				@user.send_account_create
 				flash[:success] = 'Please click on the link in your email to confirm your account.'
 				redirect_to root_path
 			else
-				flash.now[:danger] = @user.errors.full_messages
+				flash.now[:danger] = check_existing.errors.full_messages
 				render :new
 			end
+		else
+			flash[:danger] = user.errors.get(:bad_input)
+			redirect_to new_user_path
 		end
 	end
 
@@ -104,7 +100,7 @@ class UsersController < ApplicationController
 			if User.destroy_all(id: params[:id])
 				flash[:success] = 'You have successfully deleted your account.'
 				session[:id] = nil
-				cookies[:auth_token] = nil
+				cookies.delete(:auth_token)
 				redirect_to root_path
 			else
 				flash[:danger] = 'Your account was not deleted.'

@@ -5,5 +5,7 @@ $(document).ready(function() {
 	  $('li#login').addClass('active');
 	} else if (currentUrl[currentUrl.length - 2] === 'users' && currentUrl[currentUrl.length - 1] === 'new') {
 		$('li#createAccount').addClass('active');
+	} else if (currentUrl[currentUrl.length - 2] === 'directions' && currentUrl[currentUrl.length - 1] === 'new') {
+		$('li#newDirectionButton').addClass('active');
 	}
 });

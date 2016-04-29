@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-	has_many :directions
+	has_many :directions, dependent: :destroy
 
 	has_secure_password
 
@@ -13,6 +13,17 @@ class User < ActiveRecord::Base
 	# def to_param
 	# 	username
 	# end
+
+	def check_existing
+		self.errors.add(:bad_input, 'That email is already taken.') if User.find_by_email(self.email)
+		self.errors.add(:bad_input, 'That username is already taken.') if User.find_by_username(self.username)
+		
+		if self.errors.get(:bad_input) != nil
+			return false
+		else
+			return true
+		end
+	end
 
 	def send_account_create
 		generate_token(:account_create_token)
