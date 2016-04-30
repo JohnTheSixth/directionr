@@ -3,8 +3,6 @@
 
 		<%= form_for @direction, url: user_directions_path do |d| %>
 
-			<%= d.hidden_field :user_id, value: params[:user_id] %>
-
 			<div class="form-group">
 				<label for="title">Title:</label>
 				<%= d.text_field :title, class: 'form-text-field form-control', placeholder: "Title" %>
@@ -15,8 +13,8 @@
 				<%= d.text_area :body, class: 'form-control', rows: '10', cols: '60' %>
 			</div>
 
-			<%= d.submit 'Create Your Directions!', class: 'btn btn-primary' %>
-			<%= link_to 'Cancel', user_directions_path(current_user.id), class: 'btn btn-default' %>
+			<%= d.submit 'Update Your Directions!', class: 'btn btn-primary' %>
+			<%= link_to 'Cancel', user_directions_path, class: 'btn btn-default' %>
 
 		<% end %>
 

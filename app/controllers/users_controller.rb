@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 		user = User.new(user_params)
 
 		if user.check_existing
-			@user = User.create(user_params)	
+			@user = user
 
 			if @user.save
 				@user.send_account_create
@@ -46,10 +46,10 @@ class UsersController < ApplicationController
 	end
 
 	def deny
-		@user = User.find_by_account_create_token!(params[:id])
+		user = User.find_by_account_create_token!(params[:id])
 
-		if @user.account_create_confirmed_at == nil
-			if @user.destroy
+		if user.account_create_confirmed_at == nil
+			if user.destroy
 				flash[:info] = 'The account associated with this email has been deleted. We apologize for the error.'
 				redirect_to root_path
 			else
@@ -78,10 +78,17 @@ class UsersController < ApplicationController
 			flash.now[:danger] = 'The password you entered does not match the current account password.'
 			render :edit
 		elsif @user.authenticate(update_user_params[:current_password]) == @user
-			if @user.update_attributes(update_user_params.permit(:first_name, :last_name, :username, :email, :password, :password_confirmation))
-				render :show
+			@user.assign_attributes(update_user_params.permit(:first_name, :last_name, :username, :email, :password, :password_confirmation))
+
+			if @user.check_current
+				if @user.save
+					render :show
+				else
+					flash.now[:danger] = @user.errors.full_messages
+					render :edit
+				end
 			else
-				flash.now[:danger] = @user.errors.full_messages
+				flash.now[:danger] = @user.errors.get(:bad_input)
 				render :edit
 			end
 		end

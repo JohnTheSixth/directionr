@@ -25,6 +25,20 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def check_current
+		user_email = User.find_by_email(self.email)
+		user_name = User.find_by_username(self.username)
+
+		self.errors.add(:bad_input, 'That email is already taken.') if user_email.id != self.id
+		self.errors.add(:bad_input, 'That username is already taken.') if user_name.id != self.id
+		
+		if self.errors.get(:bad_input) != nil
+			return false
+		else
+			return true
+		end
+	end
+
 	def send_account_create
 		generate_token(:account_create_token)
 		self.account_create_sent_at = Time.zone.now

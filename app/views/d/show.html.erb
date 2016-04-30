@@ -1,0 +1,10 @@
+<h1><%= @direction.title %></h1>
+<hr />
+  
+<p>
+  <%= markdown(@direction.body) %>
+</p>
+<h4>Published <%= time_ago_in_words @direction.published_at %> ago</h4>
+<h4>Directions created by <%= @direction.user.username %>
+
+<p>Share These Directions: <%= d_url(@direction.short_url) %></p>

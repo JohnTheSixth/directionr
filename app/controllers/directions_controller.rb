@@ -27,17 +27,22 @@ class DirectionsController < ApplicationController
 
 	def create
 		@direction = Direction.new(direction_params)
-		@direction.published_at = Time.zone.now
-		@direction.user_id = params[:user_id]
 
-		if @direction.save
-			render :view
+		if @direction.add_stats_on_creation
+			if @direction.save
+				render :show
+			else
+				flash.now[:danger] = @direction.errors.full_messages
+				render :new
+			end
 		else
+			flash.now[:danger] = @user.errors.get(:url_error)
 			render :new
 		end
 	end
 
 	def edit
+		@direction = Direction.find(params[:id])
 	end
 
 	def update
@@ -49,7 +54,7 @@ class DirectionsController < ApplicationController
 private
 
 	def direction_params
-		params.require(:direction).permit(:title, :body)
+		params.require(:direction).permit(:title, :body, :user_id)
 	end
 
 end

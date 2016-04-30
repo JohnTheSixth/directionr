@@ -5,4 +5,9 @@
   <%= markdown(@direction.body) %>
 </p>
 <h4>Published <%= time_ago_in_words @direction.published_at %> ago</h4>
-<%= link_to "Back to Index", user_directions_path %>
+
+<p><%= link_to 'Edit these Directions', edit_user_direction_path %></p>
+
+<p>Share These Directions: <%= d_url(@direction.short_url) %></p>
+
+</p><%= link_to "Back to Index", user_directions_path %></p>
